@@ -54,7 +54,7 @@ while ($true) {
     Write-Host 'MANUTENCAO (com confirmacao)'
     Write-Host ' 8. Limpar cache DNS'
     Write-Host ' 9. Atualizar aplicativos com WinGet'
-    Write-Host ' 10. Verificar integridade do sistema (SFC)'
+    Write-Host '10. Executar SFC /scannow (solicita UAC)'
     Write-Host ' 0. Sair'
     Write-Host ''
 
@@ -172,26 +172,13 @@ while ($true) {
             }
         }
         '10' {
-            Invoke-MenuAction -Description 'Verificar e tentar reparar arquivos protegidos do Windows com SFC' -Action {
-                $principal = New-Object Security.Principal.WindowsPrincipal(
-                    [Security.Principal.WindowsIdentity]::GetCurrent()
-                )
-                $isAdmin = $principal.IsInRole(
-                    [Security.Principal.WindowsBuiltInRole]::Administrator
-                )
-
-                if (-not $isAdmin) {
-                    throw 'SFC exige uma janela do PowerShell aberta como administrador. Feche o painel, abra o PowerShell como administrador e execute-o novamente.'
-                }
-
-                $confirm = Read-Host 'O SFC verificara arquivos protegidos do Windows e tentara reparar problemas. Continuar? (s/N)'
+            Invoke-MenuAction -Description 'Executar SFC em uma janela elevada, se confirmado' -Action {
+                $confirm = Read-Host 'SFC /scannow requer elevacao. Deseja solicitar a elevacao e abrir uma janela para executa-lo? (s/N)'
                 if ($confirm -match '^(s|sim)$') {
-                    & sfc.exe /scannow
-                    $sfcExitCode = $LASTEXITCODE
-                    Write-Host ("Codigo de saida do SFC: {0}" -f $sfcExitCode)
-                    if ($sfcExitCode -ne 0) {
-                        throw "SFC terminou com codigo $sfcExitCode. Leia tambem a mensagem final exibida pelo SFC."
-                    }
+                    Start-Process -FilePath 'powershell.exe' `
+                        -Verb RunAs `
+                        -ArgumentList '-NoExit -Command "sfc.exe /scannow"' `
+                        -Wait -ErrorAction Stop
                 } else {
                     Write-Host 'Cancelado; o SFC nao foi executado.' -ForegroundColor Yellow
                 }
