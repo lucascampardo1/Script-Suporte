@@ -19,10 +19,10 @@ Menu de diagnóstico simples para Windows, feito em PowerShell. Reúne informaç
 
 ## Como executar
 
-Salve `README.md` e `Painel-Pessoal.ps1` na mesma pasta. Abra o PowerShell nessa pasta e execute:
+Salve `README.md` e `painelSuporte.ps1` na mesma pasta. Abra o PowerShell nessa pasta e execute:
 
 ```powershell
-.\Painel-Pessoal.ps1
+.\painelSuporte.ps1
 ```
 
 Se o Windows bloquear a execução do script, rode este comando uma vez no PowerShell, sem precisar abrir como administrador:
@@ -31,7 +31,7 @@ Se o Windows bloquear a execução do script, rode este comando uma vez no Power
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
-Depois, execute novamente `.\Painel-Pessoal.ps1`.
+Depois, execute novamente `.\painelSuporte.ps1`.
 
 ## Segurança e privacidade
 
