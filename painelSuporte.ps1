@@ -27,11 +27,11 @@ function Invoke-MenuAction {
         & $Action
 
         Write-Host ""
-        Write-Host "Fim da tentativa: confira os resultados." -ForegroundColor Green
+        Write-Host "Concluído! Confira os resultados." -ForegroundColor Green
     } catch {
         Write-Host ""
         Write-Host "Erro ao executar a ação: $_" -ForegroundColor Red
-        Write-Host ("Detalhes do erro: {0}" -f $_.Exception.Message) -ForegroundColor Red
+        Write-Host ("Detalhes do erro: {0}" -f $_.Exception.Message) -ForegroundColor Yellow
     } finally {
         $ErrorActionPreference = $oldErrorActionPreference
         [void](Read-Host 'Pressione Enter para voltar ao menu')
